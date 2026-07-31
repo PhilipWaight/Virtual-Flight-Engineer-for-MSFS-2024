@@ -6,7 +6,7 @@
 which automates checklists in native and addon aircraft in MSFS.
 
 
-See [tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA) providing checklist development and test process and completed checklist operation.
+See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** providing checklist development and test process and completed checklist operation.
 
 **Background**
 - Version 1 introduced flight plan load for the CIVA INS in DC Designs Concorde using mouse-macro automation. 
@@ -88,7 +88,16 @@ This project was developed through a collaborative process between the author an
 
 5. **Optionally** 
     - Launch the `VirtualFE.exe` once which will create the `Appdata\Roaming\msfsVFE` folder. From the application `templates` folder copy the **aircraft_panels_C172SP_G1000_Passengers_backup.json** file and paste to `msfsVFE`.
-    - Edit the simvar_filter.json file to allow or remove variables from the reference var list
+    - Edit the simvar_filter.json file to allow or remove variables from the reference var list box in VFE, The default file contains entries unrelated to cockpit use. The strings will filter by a partial match on the simvar name. eg Remove all ATC variables by adding "ATC" to the list
+    ```
+    [
+    "interactive ",
+    "ORNITHOPTER",
+    "MARSHALLER",
+    "LIQUID DROPPING",
+    "LIGHT AMBIENT",
+    "JETWAY ", ...
+    ```
 
 6. Launch MSFS and once started and aircraft selected, launch `VirtualFE.exe`
 
@@ -137,7 +146,7 @@ msfsVFE/
 - [ ] Develop templates for additional aircraft
 - [ ] Support aircraft change without restart
 - [ ] Popout dialogues for var and action lists
-- [ ] Scan B: vars
+- [ ] Scan B: vars on startup
 - [ ] Non-marketplace aircraft checklist XML scan and optional load of name and item names
 
 
