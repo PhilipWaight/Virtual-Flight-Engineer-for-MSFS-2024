@@ -15,7 +15,7 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 - Flight plan tracking using telemetry warns of pending new load.
 - Version 3 extends the Verison 2 architecture to provide generic checklist or single control automation for native MSFS aircraft and addons.
 
-## ✈️ Version 3 Features
+## ✈️ Version 3.0 Features
 
 - Application architecture components:
     - Client application executable 
@@ -23,7 +23,7 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
     - VFEtray.exe system tray app supported version 1 mouse-macro automation, flight plan dialogue display. Retained for future versions to also allow client app show and hide.
     - WASM bridge module providing var scanning and RPN simple and compound string execute
 - Panel, checklist, variable and action data tied to an aircraft
-- Hotkey capture from game controllers and keyboard assigned to current checklist
+- Hotkey capture from game controllers and keyboard assigned to current checklist. Responds to controller change online or offline
 - Auto scan of `Lvars` and `Simvars` and load of panels and checklists on aircraft detection
 - Checkable UI sections collapse for a small footprint during development or flight. The VFE app may be minimised with global hotkeys available in flight.
 - Support for H: events and B: events through VFE's wasm bridge
@@ -44,8 +44,6 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 - Some C172SP pre-fight checklists packaged in the release
 
 
- 
-
 ## ⚠️ Notes and Warnings
   
 1.  Target Focus: Output is targeted specifically at the MSFS process. If MSFS is not running the `system status` will change and automation operations suspended. Whilst Simconnect use does not require window focus, inline messaging during the checklist does. 
@@ -54,13 +52,20 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
     
 6. The project is released in executable format. Source is available in Github with an MIT license
 
-3. The MSFS checklist environment is not accessible through APIs. All markeplace aircraft have encrypted asset files. Addon aircraft purchased externally may have accessible XML files for checklists to allow item names to be copy-pasted into VFE. 
+3. The MSFS checklist environment is not accessible through APIs. All markeplace aircraft have encrypted asset files. Addon aircraft purchased externally may have accessible XML files for checklists to allow item names to be copy-pasted into VFE. So, checklists are built by reference to the `EFB` checklist with reuse of custom vars where possible.
 
 4. Checklist development requires use of the MSFS developer, `Behaviours` mode to identify event, var and RPN expressions for use in the checklist. In some aircraft, documentation or intuitive var naming can bypass this step.
 
 4. B: vars can be executed through rpn strings but in the current version 3.0 these types are not scanned for current values.
 
 5. The application detects the first aircraft load, but must be restarted for aircraft change in MSFS.
+
+3. Simconnect RPN strings (type stringV) of length 256 are supported in v3.0. This should cover most requirements. The `Black Square TBM 850` **crash bar down** has a stacked rpn string of less than 256, but the **up** has more than 256. There is a Roadmap item to extend this in version 3.10 .
+This **[tutorial video](https://youtu.be/_zIwTEh_x1A)** illustrates editing compound RPN strings in the TBM 850
+
+4. Shared aircraft framework files include the original assigned `hotkeys`. These displayed strings will be inactive if the same device is not present. Update with a connected controller.
+
+5. `Restore Current Aircraft` expects to find `..._backup.json` in the APPDATA folder. It will check the `templates` app sub-folder if a backup file is not found in APPDATA. A subsequent save will output to APPDATA.
 
 ## Development
 
@@ -86,9 +91,11 @@ This project was developed through a collaborative process between the author an
    
 4. **Copy** the `vfe-bridge-module` folder to your MSFS 2024 community folder. 
 
+4. **Configure** Windows Time & Language - Speech to choose a default voice and volume
+
 5. **Optionally** 
-    - Launch the `VirtualFE.exe` once which will create the `Appdata\Roaming\msfsVFE` folder. From the application `templates` folder copy the **aircraft_panels_C172SP_G1000_Passengers_backup.json** file and paste to `msfsVFE`.
-    - Edit the simvar_filter.json file to allow or remove variables from the reference var list box in VFE, The default file contains entries unrelated to cockpit use. The strings will filter by a partial match on the simvar name. eg Remove all ATC variables by adding "ATC" to the list
+    - Edit the `simvar_filter.json` file in the `templates` folder to allow or remove variables from the reference var list box in VFE, The default file contains entries unrelated to cockpit use. The strings will filter by a partial match on the simvar name. eg Remove all ATC variables by adding "ATC" to the list.
+    Note: any manual editing of json files must strictly follow the delimiter and related syntax.
     ```
     [
     "interactive ",
@@ -99,7 +106,22 @@ This project was developed through a collaborative process between the author an
     "JETWAY ", ...
     ```
 
-6. Launch MSFS and once started and aircraft selected, launch `VirtualFE.exe`
+6. Launch MSFS and once past the `Start` page, launch `VirtualFE.exe`. On first
+use, select the `C172SP_G1000_Passengers` aircraft to see checklists in action:
+    - Start a flight with the C172.
+    - Wait for VFE to detect the aircraft
+    - Select `Restore Current Aircraft`
+    - `Main Panel` will appear in the panels list.
+    - Click this panel to load the checklists
+
+## 💡 Application Context Help and Videos
+
+VFE user interface contains Help buttons which display a dialogue describing the attached list box or section of the interface. There are links to related videos in the content.
+
+`youtube` playlists provide a series of short references:
+-  **[Introducing Virtual Flight Engineer](https://www.youtube.com/playlist?list=PLSde41Ft0Vro)**
+- **[Virtual Flight Engineer version 3.0 Usage Videos](https://www.youtube.com/playlist?list=PLSde41Ft0Vro)**
+
 
 	
 ## 📁 Project Folder Structure
@@ -144,6 +166,7 @@ msfsVFE/
 - [X] Extend to handle generic checklist named panel automation.
 - [ ] Add more usage videos
 - [ ] Develop templates for additional aircraft
+- [ ] Extend Simconnect rpn string support to 512
 - [ ] Support aircraft change without restart
 - [ ] Popout dialogues for var and action lists
 - [ ] Scan B: vars on startup
