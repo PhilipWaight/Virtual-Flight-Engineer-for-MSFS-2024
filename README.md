@@ -1,6 +1,6 @@
 # Virtual Flight Engineer - Checklist Automation for MSFS 2024
 
-**Version 3.0.1, July 31, 2026**
+**Version 3.0.2, Aug 03, 2026**
 
 **VirtualFE** is a Python-based external client application and VS2022 C++ wasm bridge module for **MSFS 2024** 
 which automates checklists in native and addon aircraft in MSFS.
@@ -14,6 +14,8 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 - Phased flight plan load with INS switch and dial setting and custom coordinate formatting. 
 - Flight plan tracking using telemetry warns of pending new load.
 - Version 3 extends the Verison 2 architecture to provide generic checklist or single control automation for native MSFS aircraft and addons.
+
+Example of **[pre-start and startup checklists](https://youtu.be/A8BlytfsXlk)**
 
 ## ✈️ Version 3.0 Features
 
@@ -49,6 +51,8 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 1.  Target Focus: Output is targeted specifically at the MSFS process. If MSFS is not running the `system status` will change and automation operations suspended. Whilst Simconnect use does not require window focus, inline messaging during the checklist does. 
 
 2. VirtualFE.exe runs "on top" of other applications to facilitate checklist definition, but may be minimised during flight.
+
+3. The ⚡`Show Selected Switch` function works reliably for 2-way, toggle and 3-way switches for `switch and restore`, but does not have access to the complementary RPN string for CUSTOM_RPN types in the current version.
     
 6. The project is released in executable format. Source is available in Github with an MIT license
 
@@ -56,7 +60,7 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 
 4. Checklist development requires use of the MSFS developer, `Behaviours` mode to identify event, var and RPN expressions for use in the checklist. In some aircraft, documentation or intuitive var naming can bypass this step.
 
-4. B: vars can be executed through rpn strings but in the current version 3.0 these types are not scanned for current values.
+4. `B: vars` and `Simvars` can be executed through rpn strings but in the current version 3.0 these types are not scanned for current values.
 
 5. The application detects the first aircraft load, but must be restarted for aircraft change in MSFS.
 
@@ -164,12 +168,14 @@ msfsVFE/
     
 ## 🚀 Roadmap
 - [X] Extend to handle generic checklist named panel automation.
+- [ ] Develop an online shared aircraft checklist facility
 - [ ] Add more usage videos
+- [X] Improved syncing of lists: Ordered Var -> Actions List Item -> Reference Switch
 - [ ] Develop templates for additional aircraft
 - [ ] Extend Simconnect rpn string support to 512
 - [ ] Support aircraft change without restart
 - [ ] Popout dialogues for var and action lists
-- [ ] Scan B: vars on startup
+- [ ] Scan B: vars and Simvars values on startup
 - [ ] Non-marketplace aircraft checklist XML scan and optional load of name and item names
 
 
