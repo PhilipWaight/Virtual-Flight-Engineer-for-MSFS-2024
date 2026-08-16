@@ -1,10 +1,17 @@
 # Virtual Flight Engineer - Checklist Automation for MSFS 2024
 
-**Version 3.0.2, Aug 03, 2026**
+**Version 3.1.0, Aug 16, 2026**
 
-**VirtualFE** is a Python-based external client application and VS2022 C++ wasm bridge module for **MSFS 2024** 
-which automates checklists in native and addon aircraft in MSFS.
+See `CHANGELOG.MD` for latest release information
 
+**VirtualFE** is a Python-based external client application and VS2022 C++ wasm bridge module for **MSFS 2024**, 
+providing a checklist building platform and automated checklist execution in native and addon aircraft in MSFS. 
+- A checklist might comprise a single switch setting or multiple checkpoints across multiple panels. 
+- Run checklists from the UI or via game controller or keyboard hotkey triggers.
+- Run checklists during flight using hotkeys with the app minimised or with a minimal footprint showing just panel, checklists and trigger buttons on top of the game window.
+- Build checklists utilizing a `Show selected switch` button which flips a switch on and off to confirm the target. `Test current checklist` with voice announcement and on-screen message for each checkpoint.
+
+Note `🚀 Installation & Setup` step 6 to see checklists in action on the C172 and as an example of checklist setup and content.
 
 See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** providing checklist development and test process and completed checklist operation.
 
@@ -27,7 +34,7 @@ Example of **[pre-start and startup checklists](https://youtu.be/A8BlytfsXlk)**
 - Panel, checklist, variable and action data tied to an aircraft
 - Hotkey capture from game controllers and keyboard assigned to current checklist. Responds to controller change online or offline
 - Auto scan of `Lvars` and `Simvars` and load of panels and checklists on aircraft detection
-- Checkable UI sections collapse for a small footprint during development or flight. The VFE app may be minimised with global hotkeys available in flight.
+- Checkable UI sections collapse to a small footprint during checklist building or flight. The VFE app may be minimised with global hotkeys available in flight or leave visible on a second monitor.
 - Support for H: events and B: events through VFE's wasm bridge
 - Custom inline messages, pauses
 - Messages may be:
@@ -43,7 +50,7 @@ Example of **[pre-start and startup checklists](https://youtu.be/A8BlytfsXlk)**
 - Sharable aircraft profiles through `backup` and `restore` buttons
 - `View JSON` button displays the complete aircraft profile content.
 - Version 3.0 has been tested with the Asobo C172SP, Black Square TBM 850 and DC Designs Concorde to confirm native and addon MSFS 2024, and 2020-ported aircraft use.
-- Some C172SP pre-fight checklists packaged in the release
+- Some C172SP, DC Designs Concorde and Black Square TBM 850 checklists packaged in the release
 
 
 ## ⚠️ Notes and Warnings
@@ -54,22 +61,28 @@ Example of **[pre-start and startup checklists](https://youtu.be/A8BlytfsXlk)**
 
 3. The ⚡`Show Selected Switch` function works reliably for 2-way, toggle and 3-way switches for `switch and restore`, but does not have access to the complementary RPN string for CUSTOM_RPN types in the current version.
     
-6. The project is released in executable format. Source is available in Github with an MIT license
+4. The project is released in executable format.
 
-3. The MSFS checklist environment is not accessible through APIs. All markeplace aircraft have encrypted asset files. Addon aircraft purchased externally may have accessible XML files for checklists to allow item names to be copy-pasted into VFE. So, checklists are built by reference to the `EFB` checklist with reuse of custom vars where possible.
+5. The MSFS checklist environment is not accessible through APIs. All markeplace aircraft have encrypted asset files. Addon aircraft purchased externally may have accessible XML files for checklists to allow item names to be copy-pasted into VFE. So, checklists are built by reference to the `EFB` checklist with reuse of custom vars where possible.
 
-4. Checklist development requires use of the MSFS developer, `Behaviours` mode to identify event, var and RPN expressions for use in the checklist. In some aircraft, documentation or intuitive var naming can bypass this step.
+6. Checklist development requires use of the MSFS developer, `Behaviours` mode to identify event, var and RPN expressions for use in the checklist. In some aircraft, documentation or intuitive var naming can bypass this step.
 
-4. `B: vars` and `Simvars` can be executed through rpn strings but in the current version 3.0 these types are not scanned for current values.
+7. `B: vars` and `Simvars` can be executed through rpn strings but in the current version 3.0 these types are not scanned for current values.
 
-5. The application detects the first aircraft load, but must be restarted for aircraft change in MSFS.
+8. The application detects the first aircraft load, but must be restarted for aircraft change in MSFS.
 
-3. Simconnect RPN strings (type stringV) of length 256 are supported in v3.0. This should cover most requirements. The `Black Square TBM 850` **crash bar down** has a stacked rpn string of less than 256, but the **up** has more than 256. There is a Roadmap item to extend this in version 3.10 .
+9. Simconnect RPN strings (type stringV) of length 256 are supported in v3.0. This should cover most requirements. The `Black Square TBM 850` **crash bar down** has a stacked rpn string of less than 256, but the **up** has more than 256. There is a Roadmap item to extend this in version 3.10 .
 This **[tutorial video](https://youtu.be/_zIwTEh_x1A)** illustrates editing compound RPN strings in the TBM 850
 
-4. Shared aircraft framework files include the original assigned `hotkeys`. These displayed strings will be inactive if the same device is not present. Update with a connected controller.
+10. Shared aircraft framework files include the original assigned `hotkeys`. These displayed strings will be inactive if the same device is not present. Update with a connected controller.
 
-5. `Restore Current Aircraft` expects to find `..._backup.json` in the APPDATA folder. It will check the `templates` app sub-folder if a backup file is not found in APPDATA. A subsequent save will output to APPDATA.
+11. `Restore Current Aircraft` expects to find `..._backup.json` in the APPDATA folder. It will check the `templates` app sub-folder if a backup file is not found in APPDATA. A subsequent save will output to APPDATA. 
+
+12. Aircraft variants (`Configure` on aircraft select page or add-on aircraft panel options) will change the aircraft name and switch availabilty. Developing switches on the base variant is a good strategy. Changing variant will not trigger a default aircraft check or change in VFE, so you can launch the default aircraft, start VFE and leave this configuration for any other subsequent chosen variant, with support for shared switches. Restart VFE to change to the current variant configuration. 
+
+13. Use `Backup Current Aircraft` and rename the created backup file to match the variant eg `aircraft_panels_C172SP_G1000_Passengers_backup.json` renamed to `aircraft_panels_C172SP_IFD_Passengers_Skis_backup.json`. **Also edit the 2nd line of the json file to the same name!** Start a flight with the variant in MSFS, restart VFE and click `Restore Current Aircraft`.
+
+
 
 ## Development
 
@@ -93,13 +106,14 @@ This project was developed through a collaborative process between the author an
 
 2. **Dependencies** The release package is self-contained.
    
-4. **Copy** the `vfe-bridge-module` folder to your MSFS 2024 community folder. 
+3. **Copy** the `vfe-bridge-module` folder to your MSFS 2024 community folder. 
 
-4. **Configure** Windows Time & Language - Speech to choose a default voice and volume
+4. **Configure** Windows Time & Language - Speech to choose a default voice and volume for co-pilot checklist and checkpoint messages
 
 5. **Optionally** 
     - Edit the `simvar_filter.json` file in the `templates` folder to allow or remove variables from the reference var list box in VFE, The default file contains entries unrelated to cockpit use. The strings will filter by a partial match on the simvar name. eg Remove all ATC variables by adding "ATC" to the list.
     Note: any manual editing of json files must strictly follow the delimiter and related syntax.
+    Remove or rename simvar_filter.json to load all scanned variables.
     ```
     [
     "interactive ",
@@ -168,9 +182,13 @@ msfsVFE/
     
 ## 🚀 Roadmap
 - [X] Extend to handle generic checklist named panel automation.
+- [ ] Allow checklist trigger to run all panels in sequence registered with the same trigger. Version 3.1.0 limited to one checklist and one panel.
 - [ ] Develop an online shared aircraft checklist facility
+- [ ] Support aircraft variants transparently (rather then backup, copy, rename, restore strategy)
 - [ ] Add more usage videos
 - [X] Improved syncing of lists: Ordered Var -> Actions List Item -> Reference Switch
+- [X] Shift+Esc interrupt of checklist
+- [X] Interface text font scale in settings
 - [ ] Develop templates for additional aircraft
 - [ ] Extend Simconnect rpn string support to 512
 - [ ] Support aircraft change without restart
