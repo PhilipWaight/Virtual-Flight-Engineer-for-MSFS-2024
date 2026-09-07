@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## V3.2.0 - 2026-09-05
+
+### Added
+
+- **Menu Bar** and user interface improvements
+    - `Status`, `Checklist`, `BuildView`, `Flight Plan` and `Settings` layouts
+    - Simplified main checklist build view by moving settings and flight plan to other pages and telemetry to status and flight plan pages
+    - Collapse to menu bar option for minimum footprint on MSFS
+    - Improved settings page 
+        - Settings saved to config\config.json 
+        - Interface scale added
+    - Progress log box replicated on multiple pages
+    - Uses generic multi-view widget updater for status display, buttons status, panels and checklists
+    
+- Improved connection monitoring and aircraft change detection using telemetry
+
+- 
+
 ## V3.1.0 - 2026-08-16
 
 ### Added
@@ -11,7 +29,7 @@ All notable changes to this project will be documented in this file.
 - MSFS var type support improved:
     - Clicking an `ordered var` item displays the var type in
     a header list.
-    - Change the assigned var type with confirmation, for the rare situation where an sircrsft type is mis-assigned, especially `A:simvar` with `L:var`.
+    - Change the assigned var type with confirmation, for the rare situation where an aircraft type is mis-assigned, especially `A:simvar` with `L:var`.
     - A changed var type is made persistent by auto save to the aircraft config under `custom_var_map`
     - Context help button alongside var type list contains a definition of each var with usage notes.
 - Inline message text `ACTION:MSG` supports basic `markdown` including `backtick` highlighting

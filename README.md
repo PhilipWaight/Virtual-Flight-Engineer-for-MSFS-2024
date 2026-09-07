@@ -1,6 +1,6 @@
 # Virtual Flight Engineer - Checklist Automation for MSFS 2024
 
-**Version 3.1.0, Aug 16, 2026**
+**Version 3.2.0, Sep 06, 2026**
 
 See `CHANGELOG.MD` for latest release information
 
@@ -21,6 +21,7 @@ See **[tutorial videos](https://www.youtube.com/playlist?list=PLSkQkNS9pCjA)** p
 - Phased flight plan load with INS switch and dial setting and custom coordinate formatting. 
 - Flight plan tracking using telemetry warns of pending new load.
 - Version 3 extends the Verison 2 architecture to provide generic checklist or single control automation for native MSFS aircraft and addons.
+- Version 3.2 overhaul of user interface with PyQt-Fluent interface features for command bar, menu icons and settings. improved detection of MSFS flight status.
 
 Example of **[pre-start and startup checklists](https://youtu.be/A8BlytfsXlk)**
 
